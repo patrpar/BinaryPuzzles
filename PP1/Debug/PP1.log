@@ -1,0 +1,26 @@
+﻿  conio2.cpp
+  PP1.cpp
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(165,12): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(290,13): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(291,8): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(295,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(298,3): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(351,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(356,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(361,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(366,4): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(475,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(482,7): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(486,7): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(490,7): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(494,7): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(498,7): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(502,7): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(516,5): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(544,5): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(550,12): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(666,11): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\Dokumenty\Studia\Podstawy programowania\PP1\PP1\PP1.cpp(694,11): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  stdafx.cpp
+  Generowanie kodu...
+  PP1.vcxproj -> D:\Dokumenty\Studia\Podstawy programowania\PP1\Debug\PP1.exe
