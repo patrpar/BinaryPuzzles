@@ -3,30 +3,33 @@
 #include<cstdlib>
 #include"conio2.h"
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #define LEG_X 1
 #define LEG_Y 1
 #define RAMKA_X 45
 #define RAMKA_Y 1
 #define L_WYPELNIEN (SIZE*SIZE/4)
 
-void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczbaZerKol, int *liczbaJedynekWi, int *liczbaZerWi, int dx, int dy, bool *nieMozesz, bool *nieMozeszDlaKolumn, bool &mozesz, int &nrPowt3, bool czyWpisac)
+// wpisywanie 0 lub 1, uwzgledniajac zasady wpisywania (blokada wpisywania b³êdnych danych)
+void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczbaZerKol, int *liczbaJedynekWi, int *liczbaZerWi, int dx, int dy, bool *nieMozna, bool *nieMoznaDlaKolumn, bool &mozesz, int &nrPowt3, bool czyWpisac)
 {
-	nieMozesz[0] = false;
-	nieMozesz[1] = false;
-	nieMozesz[2] = false;
+	nieMozna[0] = false;
+	nieMozna[1] = false;
+	nieMozna[2] = false;
 	mozesz = false;
 	//spr. reguly 3 dla kolumn
 	if (liczbaJedynekKol[dx] + liczbaZerKol[dx] == SIZE - 1) {
 		for (int i = 0; i < SIZE; i++) {
 			if (liczbaZerKol[i] + liczbaJedynekKol[i] != SIZE) continue;
-			if (nieMozesz[2]) break;
+			if (nieMozna[2]) break;
 			for (int j = 0; j < SIZE; j++) {
 				if (i != dx) {
 					if (gra[i][j] != gra[dx][j]) {
 						if (gra[i][j] == zn && j == dy)
 							if (j == SIZE - 1) {
-								nieMozesz[2] = true;
-								nieMozeszDlaKolumn[1] = true; //regula 3 - nie mozesz wpisac, bo sa takie same kolumny
+								nieMozna[2] = true;
+								nieMoznaDlaKolumn[1] = true; //regula 3 - nie mozna wpisac, bo sa takie same kolumny
 								nrPowt3 = i;
 								break;
 							}
@@ -36,8 +39,8 @@ void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczba
 							break;
 					}
 					else if (j == SIZE - 1) {
-						nieMozesz[2] = true; //sa takie same
-						nieMozeszDlaKolumn[1] = true;
+						nieMozna[2] = true; //sa takie same
+						nieMoznaDlaKolumn[1] = true;
 						nrPowt3 = i;
 					}
 				}
@@ -49,14 +52,14 @@ void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczba
 	if (liczbaJedynekWi[dy] + liczbaZerWi[dy] == SIZE - 1) {
 		for (int i = 0; i < SIZE; i++) {
 			if (liczbaZerWi[i] + liczbaJedynekWi[i] != SIZE) continue;
-			if (nieMozesz[2]) break;
+			if (nieMozna[2]) break;
 			for (int j = 0; j < SIZE; j++) {
 				if (i != dy) {
 					if (gra[j][i] != gra[j][dy]) {
 						if (gra[j][i] == zn && j == dx)
 							if (j == SIZE - 1) {
-								nieMozesz[2] = true;
-								nieMozeszDlaKolumn[1] = false; //regula 3 - nie mozesz wpisac, bo sa takie same wiersze
+								nieMozna[2] = true;
+								nieMoznaDlaKolumn[1] = false; //regula 3 - nie mozesz wpisac, bo sa takie same wiersze
 								break;
 								nrPowt3 = i;
 							}
@@ -66,8 +69,8 @@ void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczba
 							break;
 					}
 					else if (j == SIZE - 1) {
-						nieMozesz[2] = true; //sa takie same
-						nieMozeszDlaKolumn[1] = false;
+						nieMozna[2] = true; //sa takie same
+						nieMoznaDlaKolumn[1] = false;
 						nrPowt3 = i;
 					}
 				}
@@ -77,22 +80,22 @@ void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczba
 	}
 	//spr. reguly 1
 	if ((dx >= 2 && gra[dx - 2][dy] == zn && gra[dx - 1][dy] == zn) || (dx <= SIZE - 3 && gra[dx + 1][dy] == zn && gra[dx + 2][dy] == zn) || (dy >= 2 && gra[dx][dy - 2] == zn && gra[dx][dy - 1] == zn) || (dy <= SIZE - 3 && gra[dx][dy + 1] == zn && gra[dx][dy + 2] == zn) || (dx >= 1 && dx <= SIZE - 2 && gra[dx - 1][dy] == zn && gra[dx + 1][dy] == zn) || (dy >= 1 && dy <= SIZE - 2 && gra[dx][dy - 1] == zn && gra[dx][dy + 1] == zn))
-		nieMozesz[0] = true;
+		nieMozna[0] = true;
 	//spr. reguly 2 dla zer
 	if (zn == 48 && (liczbaZerKol[dx] == SIZE / 2 || liczbaZerWi[dy] == SIZE / 2))
 	{
-		nieMozesz[1] = true;
-		if (liczbaZerKol[dy] == SIZE / 2) nieMozeszDlaKolumn[0] = true;
-		else if (liczbaZerWi[dy] == SIZE / 2) nieMozeszDlaKolumn[0] = false;
+		nieMozna[1] = true;
+		if (liczbaZerKol[dy] == SIZE / 2) nieMoznaDlaKolumn[0] = true;
+		else if (liczbaZerWi[dy] == SIZE / 2) nieMoznaDlaKolumn[0] = false;
 	}
 	//spr. reguly 2 dla jedynek
 	if (zn == 49 && (liczbaJedynekKol[dx] == SIZE / 2 || liczbaJedynekWi[dy] == SIZE / 2))
 	{
-		nieMozesz[1] = true;
-		if (liczbaJedynekKol[dy] == SIZE / 2) nieMozeszDlaKolumn[0] = true;
-		else if (liczbaJedynekWi[dy] == SIZE / 2) nieMozeszDlaKolumn[0] = false;
+		nieMozna[1] = true;
+		if (liczbaJedynekKol[dy] == SIZE / 2) nieMoznaDlaKolumn[0] = true;
+		else if (liczbaJedynekWi[dy] == SIZE / 2) nieMoznaDlaKolumn[0] = false;
 	}
-	if (!nieMozesz[0] && !nieMozesz[1] && !nieMozesz[2]) {
+	if (!nieMozna[0] && !nieMozna[1] && !nieMozna[2]) {
 		if (czyWpisac) {
 			if (zn == 48) {
 				if (gra[dx][dy] == '1') {
@@ -124,7 +127,8 @@ void wpisywanie(char **gra, int SIZE, int zn, int *liczbaJedynekKol, int *liczba
 	}
 }
 
-void init_los(char **gra, bool **graBool, int SIZE, int *liczbaJedynekKol, int *liczbaZerKol, int *liczbaJedynekWi, int *liczbaZerWi, bool **czyMoznaKGra, bool **czyMoznaJGra, int **uzupelnienieJ, bool *nieMozesz, bool *nieMozeszDlaKolumn, bool &mozesz, int &nrPowt3)
+// ulozenie losowej planszy z 0 i 1
+void init_los(char **gra, bool **graBool, int SIZE, int *liczbaJedynekKol, int *liczbaZerKol, int *liczbaJedynekWi, int *liczbaZerWi, bool **czyMoznaKGra, bool **czyMoznaJGra, int **uzupelnienieJ, bool *nieMozna, bool *nieMoznaDlaKolumn, bool &mozesz, int &nrPowt3)
 {
 	int los_x, los_y, los_liczba, los_i = L_WYPELNIEN; //losowa liczba, jest rowna liczbie pol ktore zostana wylosowane na pocz. programu
 	for (int i = 0; i < SIZE; i++) {
@@ -145,16 +149,16 @@ void init_los(char **gra, bool **graBool, int SIZE, int *liczbaJedynekKol, int *
 		los_y = rand() % SIZE;
 		los_liczba = (rand() % 2) + 48;
 		if (!graBool[los_x][los_y]) {
-			wpisywanie(gra, SIZE, los_liczba, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, los_x, los_y, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, true);
+			wpisywanie(gra, SIZE, los_liczba, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, los_x, los_y, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, true);
 			if (mozesz) {
 				graBool[los_x][los_y] = true;
 				los_i--;
 			}
 		}
 	}
-	nieMozesz[0] = false;
-	nieMozesz[1] = false;
-	nieMozesz[2] = false;
+	nieMozna[0] = false;
+	nieMozna[1] = false;
+	nieMozna[2] = false;
 	mozesz = false;
 	los_i = L_WYPELNIEN;
 }
@@ -170,7 +174,7 @@ int main() {
 	char **gra = new char *[99]; //tablica, w ktorej beda wpisywane 0 i 1
 	bool **graBool = new bool *[99]; //true - CYFRA WPISANA PRZY INICJALIZACJI, false - CYFRA WPISANA PRZEZ GRACZA lub PUSTA
 	bool **czyMoznaKGra = new bool *[99]; //true - w dane pole mozna wpisac przynajmniej jedna cyfre, false - nie mozna nic wpisac (zaswietli sie)
-	bool **czyMoznaJGra = new bool *[99]; //true - w dane pole mozna wpisac zero lub obie cyfry, false - w dane pole mozna wpisac tylko jedna cyfre 0 lub 1 (zaswietli sie)
+	bool **czyMoznaJGra = new bool *[99]; //true - w dane pole mozna wpisac obie cyfry (lub zadnej), false - w dane pole mozna wpisac tylko jedna cyfre 0 lub 1 (zaswietli sie)
 	int **uzupelnienieJ = new int *[99]; //przyjmuje wartosci 0 i 1, w zaleznosci od tego, ktora z cyfr mozna uzupelnic pole jednoznaczne
 	for (int i = 0; i < 99; i++) {
 		gra[i] = new char[99];
@@ -194,7 +198,7 @@ int main() {
 			gra[i][j] = ' ';
 			graBool[i][j] = false;
 			czyMoznaKGra[i][j] = true; //czy mozna wpisac w dane pole - po wcisnieciu 'k'
-			czyMoznaJGra[i][j] = true; //czy jednoznaczne - po wc. 'j'
+			czyMoznaJGra[i][j] = true; //czy niejednoznaczne - po wc. 'j'
 			uzupelnienieJ[i][j] = -1;
 		}
 	}
@@ -204,9 +208,9 @@ int main() {
 	int planszaDomY0[20] = { 7, 1, 3, 9, 10, 2, 3, 5, 9, 10, 7, 10, 11, 3, 4, 9, 3, 3, 7, 10 };
 	int planszaDomX1[16] = { 0, 1, 2, 2, 3, 3, 3, 3, 4, 8, 8, 8, 9, 10, 10, 11 };
 	int planszaDomY1[16] = { 4, 8, 4, 6, 0, 3, 6, 11, 8, 1, 5, 6, 11, 4, 8, 0 };
-	//nieMozesz[0] - true = nie mozesz wpisac danej cyfry, bo lamiesz regule 1, false - nie lamiesz reguly 1; [1] - true = lamiesz regule 2; [2] - true = lamiesz regule 3
-	bool nieMozesz[3] = { false, false, false };
-	bool nieMozeszDlaKolumn[2] = { false, false }; //[0] - dla reguly 2; true - kolumny maja za duzo 0/1, false - wiersze maja za duzo 0/1; [1] - dla reguly 3; true - sa takie same kolumny, false - takie same wiersze
+	//nieMozna[0] - true = nie mozesz wpisac danej cyfry, bo lamiesz regule 1, false - nie lamiesz reguly 1; [1] - true = lamiesz regule 2; [2] - true = lamiesz regule 3
+	bool nieMozna[3] = { false, false, false };
+	bool nieMoznaDlaKolumn[2] = { false, false }; //[0] - dla reguly 2; true - kolumny maja za duzo 0/1, false - wiersze maja za duzo 0/1; [1] - dla reguly 3; true - sa takie same kolumny, false - takie same wiersze
 												   //mozesz - true = mozesz wpisac dana cyfre, nie jest lamana zadna regula, automatic - true = tryb automatyczny wlaczony
 	bool mozesz = false, automatic = false;
 	//[i] = true -> podpowiedz nr i ma zostac wypisana na ekranie
@@ -218,7 +222,7 @@ int main() {
 	Conio2_Init();
 #endif
 
-	settitle("Patryk Pardej 165249");
+	settitle("Puzzle binarne");
 	do {
 		SIZEtmp = SIZE;
 		textbackground(BLACK);
@@ -247,8 +251,8 @@ int main() {
 					czyMoznaKJ[0] = true;
 					czyMoznaKJ[1] = true;
 					for (int k = 48; k <= 49; k++) {
-						wpisywanie(gra, SIZE, k, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, false);
-						if (nieMozesz[0] || nieMozesz[1] || nieMozesz[2])
+						wpisywanie(gra, SIZE, k, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, false);
+						if (nieMozna[0] || nieMozna[1] || nieMozna[2])
 							czyMoznaKJ[k - 48] = false;
 						if (!czyMoznaKJ[0] && !czyMoznaKJ[1]) {
 							czyMoznaA = false;
@@ -280,13 +284,8 @@ int main() {
 		}
 		dx = x - RAMKA_X - 1;
 		dy = y - RAMKA_Y - 1;
+
 		//LEGENDA
-		gotoxy(LEG_X, LEG_Y);
-		cputs("Imie i nazwisko: Patryk Pardej");
-		gotoxy(LEG_X, LEG_Y + 1);
-		cputs("Nr indeksu: 165249");
-		gotoxy(LEG_X, LEG_Y + 2);
-		cputs("Zaimplementowane: abcdefghijklmn");
 		if (zero) sprintf(txt, "kod klawisza: 0x00 0x%02x", zn);
 		else sprintf(txt, "kod klawisza: 0x%02x", zn);
 		gotoxy(LEG_X, LEG_Y + 3);
@@ -379,9 +378,9 @@ int main() {
 		// z których pierwszy jest zerem, np. strza³ka w górê
 		// to zero i 'H'
 		zero = 0;
-		nieMozesz[0] = false;
-		nieMozesz[1] = false;
-		nieMozesz[2] = false;
+		nieMozna[0] = false;
+		nieMozna[1] = false;
+		nieMozna[2] = false;
 		mozesz = false;
 		czyMoznaKJ[0] = true;
 		czyMoznaKJ[1] = true;
@@ -418,7 +417,7 @@ int main() {
 		}
 		else if (zn == 48 || zn == 49) {
 			if (!graBool[dx][dy]) {
-				wpisywanie(gra, SIZE, zn, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, dx, dy, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, true);
+				wpisywanie(gra, SIZE, zn, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, dx, dy, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, true);
 			}
 		}
 		else if (zn == 8 && gra[dx][dy] != ' ' && !graBool[dx][dy]) {
@@ -466,7 +465,7 @@ int main() {
 			}
 		}
 		else if (zn == 'o' || zn == 'O') {
-			init_los(gra, graBool, SIZE, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, czyMoznaKGra, czyMoznaJGra, uzupelnienieJ, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3);
+			init_los(gra, graBool, SIZE, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, czyMoznaKGra, czyMoznaJGra, uzupelnienieJ, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3);
 		}
 		else if (zn == 'p' || zn == 'P') {
 			for (int i = 0; i < 13; i++) podpowiedzBool[i] = false;
@@ -476,28 +475,28 @@ int main() {
 			}
 			else {
 				for (int i = 48; i <= 49; i++) {
-					wpisywanie(gra, SIZE, i, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, dx, dy, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, false);
+					wpisywanie(gra, SIZE, i, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, dx, dy, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, false);
 					if (mozesz) {
 						podpowiedzBool[1 + (i - 48)] = true;
 						sprintf(podpowiedz[1 + (i - 48)], "Mozesz tu wpisac %d.", i - 48);
 					}
-					if (nieMozesz[0]) {
+					if (nieMozna[0]) {
 						podpowiedzBool[3 + (i - 48)] = true;
 						sprintf(podpowiedz[3 + (i - 48)], "Nie mozesz tu wpisac %d, bo bedzie to trzecia ta sama cyfra z rzedu.", i - 48);
 					}
-					if (nieMozesz[1] && nieMozeszDlaKolumn[0]) {
+					if (nieMozna[1] && nieMoznaDlaKolumn[0]) {
 						podpowiedzBool[5 + (i - 48)] = true;
 						sprintf(podpowiedz[5 + (i - 48)], "Nie mozesz tu wpisac %d, bo w tej kolumnie znajduje sie juz maksymalna liczba tej cyfry.", i - 48);
 					}
-					if (nieMozesz[1] && !nieMozeszDlaKolumn[0]) {
+					if (nieMozna[1] && !nieMoznaDlaKolumn[0]) {
 						podpowiedzBool[7 + (i - 48)] = true;
 						sprintf(podpowiedz[7 + (i - 48)], "Nie mozesz tu wpisac %d, bo w tym wierszu znajduje sie juz maksymalna liczba tej cyfry.", i - 48);
 					}
-					if (nieMozesz[2] && nieMozeszDlaKolumn[1]) {
+					if (nieMozna[2] && nieMoznaDlaKolumn[1]) {
 						podpowiedzBool[9 + (i - 48)] = true;
 						sprintf(podpowiedz[9 + (i - 48)], "Nie mozesz tu wpisac %d, bo istnieje juz taka kolumna o numerze %d.", i - 48, nrPowt3);
 					}
-					if (nieMozesz[2] && !nieMozeszDlaKolumn[1]) {
+					if (nieMozna[2] && !nieMoznaDlaKolumn[1]) {
 						podpowiedzBool[11 + (i - 48)] = true;
 						sprintf(podpowiedz[11 + (i - 48)], "Nie mozesz tu wpisac %d, bo istnieje juz taki wiersz o numerze %d.", i - 48, nrPowt3);
 					}
@@ -549,7 +548,7 @@ int main() {
 				nazwa[ilecyfr + 4] = '\0';
 				plik = fopen(nazwa, "r");
 				if (plik == NULL)
-					init_los(gra, graBool, SIZE, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, czyMoznaKGra, czyMoznaJGra, uzupelnienieJ, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3);
+					init_los(gra, graBool, SIZE, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, czyMoznaKGra, czyMoznaJGra, uzupelnienieJ, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3);
 				else {
 					int c = 0;
 					for (int i = 0; i < SIZE * SIZE + SIZE * 2; i++) {
@@ -590,8 +589,8 @@ int main() {
 						czyMoznaKJ[0] = true;
 						czyMoznaKJ[1] = true;
 						for (int k = 48; k <= 49; k++) {
-							wpisywanie(gra, SIZE, k, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, false);
-							if (nieMozesz[0] || nieMozesz[1] || nieMozesz[2])
+							wpisywanie(gra, SIZE, k, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, false);
+							if (nieMozna[0] || nieMozna[1] || nieMozna[2])
 								czyMoznaKJ[k - 48] = false;
 							if (!czyMoznaKJ[0] && !czyMoznaKJ[1])
 								czyMoznaKGra[i][j] = false;
@@ -608,8 +607,8 @@ int main() {
 						czyMoznaKJ[0] = true;
 						czyMoznaKJ[1] = true;
 						for (int k = 48; k <= 49; k++) {
-							wpisywanie(gra, SIZE, k, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, false);
-							if (nieMozesz[0] || nieMozesz[1] || nieMozesz[2])
+							wpisywanie(gra, SIZE, k, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, false);
+							if (nieMozna[0] || nieMozna[1] || nieMozna[2])
 								czyMoznaKJ[k - 48] = false;
 						}
 						if (!czyMoznaKJ[0] && czyMoznaKJ[1]) {
@@ -630,7 +629,7 @@ int main() {
 				for (int j = 0; j < SIZE; j++) {
 					if (!czyMoznaJGra[i][j])
 					{
-						wpisywanie(gra, SIZE, uzupelnienieJ[i][j] + 48, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozesz, nieMozeszDlaKolumn, mozesz, nrPowt3, false);
+						wpisywanie(gra, SIZE, uzupelnienieJ[i][j] + 48, liczbaJedynekKol, liczbaZerKol, liczbaJedynekWi, liczbaZerWi, i, j, nieMozna, nieMoznaDlaKolumn, mozesz, nrPowt3, false);
 						if (mozesz) {
 							gra[i][j] = uzupelnienieJ[i][j] + 48;
 							if (uzupelnienieJ[i][j] == 0) {
